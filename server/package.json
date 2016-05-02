@@ -1,0 +1,10 @@
+{
+    "name": "BattleOfLegends",
+    "version": "0.0.0",
+    "description": "LOL API contest - Battle of Legends browser game",
+    "dependencies": {
+        "socket.io": "latest",
+        "express": "latest"
+    },
+    "author": "developer"
+}

@@ -1,0 +1,83 @@
+<?php
+
+module_load_include('inc', 'battle_of_legends', 'api/lol_api');
+
+/**
+ * Implements hook_menu().
+ */
+function battle_of_legends_menu() {
+  $items['bol'] = array(
+    'title' => 'Battle of Legends',
+    'page callback' => 'battle_of_legends_page',
+    'access callback' => TRUE,
+  );
+
+  // Ajax
+  $items['bol/login'] = array(
+    'access arguments'  => array('access content'),
+    'page callback'     => 'bol_login',
+    'delivery callback' => 'drupal_json_output'
+  );
+
+  return $items;
+}
+
+function battle_of_legends_page() {
+  global $base_url;
+
+  $page = array();
+
+  $path = drupal_get_path('module', 'battle_of_legends');
+
+  $content = theme_render_template($path . '/theme/page.tpl.php', array());
+
+  $page['main'] = array(
+    '#markup' => $content,
+  );
+
+  drupal_add_css($path . '/css/battle_of_legends.css');
+
+  // Socket.IO
+  $server = variable_get('application_server_host');
+  $port = variable_get('application_server_port');
+  drupal_add_js($server . ':' . $port . '/socket.io/socket.io.js', 'external');
+  drupal_add_js(array(
+    'appServer' => array(
+      'host' => $server,
+      'port' => $port,
+    ),
+  ), 'setting');
+
+  // Angular.JS
+  drupal_add_js($path . '/angularjs/angular.min.js');
+  drupal_add_js($path . '/js/app.js');
+
+  return $page;
+}
+
+// Ajax calls
+function bol_login() {
+  $data = file_get_contents("php://input");
+  $data = json_decode($data, TRUE);
+
+  $user_info = LoLAPI::getUserByName($data['user'], $data['server']);
+  if ($user_info !== null) {
+    $user_info = reset($user_info);
+    $masteries = LoLAPI::getChampionMasteries($user_info['id'], $data['server']);
+
+    // Get all champions
+    $champions = LoLAPI::getChampions($data['server']);
+
+    return array(
+      'userInfo' => $user_info,
+      'masteries' => $masteries,
+      'champions' => $champions,
+      'success' => 1,
+    );
+  }
+  else {
+    return array(
+      'success'=> 0
+    );
+  }
+}
