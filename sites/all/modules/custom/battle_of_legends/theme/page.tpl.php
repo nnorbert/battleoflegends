@@ -35,6 +35,8 @@
         <div class="champion-list" ng-show="gameCtrl.gameStatus.start">
           <div class="play-online" ng-click="gameCtrl.playOnline()">PLAY ONLINE</div>
           <div class="play-ai" ng-click="gameCtrl.playAI()">PLAY WITH AI</div>
+
+          <div>{{ playersOnline }} online players.</div>
         </div>
 
         <!-- CHAMPION SEELCT SCREEN -->
@@ -55,7 +57,8 @@
 
         <!-- FINDING PLAYER SCREEN -->
         <div class="finding-player" ng-show="gameCtrl.gameStatus.findingPlayer">
-          Waiting for another player...
+          <div class="message">Waiting for another player...</div>
+          <div class="button" ng-click="gameCtrl.cancelWaiting()">Cancel</div>
         </div>
 
         <!-- BATTLE SCREEN -->

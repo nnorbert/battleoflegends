@@ -1,15 +1,16 @@
 var app = angular.module('BoLApp', []);
 
 app
-  .controller('appController', function ($scope, api, client) {
+  .controller('appController', function ($scope, api, client, ai) {
     $scope.loading = false;
 
     $scope.waitTimeIndex = 1;
-    $scope.roundsToWin = 1;
+    $scope.roundsToWin = 2;
     $scope.waitTimes = [10, 500, 1000];
 
     $scope.timeouts;
 
+    $scope.playersOnline = 0;
     // Connection object
     $scope.connection = {
       $socket: null,
@@ -122,6 +123,7 @@ app
       gameOver: false,
     };
 
+    $scope.gameCtrl.opponentDisconnected = false;
     $scope.gameCtrl.match = {};
 
     $scope.gameCtrl.setUpgrades = function() {
@@ -198,6 +200,18 @@ app
         case 'ai':
           break;
       }
+    }
+
+    $scope.gameCtrl.cancelWaiting = function() {
+      $scope.gameCtrl.gameStatus.start = true;
+      $scope.gameCtrl.gameStatus.findingPlayer = false;
+
+      $scope.gameCtrl.match.player = {};
+
+      // Cancelling new game request
+      client.send($scope.connection.$socket, 'cancelWaiting', {
+        userID: $scope.user.info.id,
+      });
     }
 
     $scope.gameCtrl.battle = function() {
@@ -290,9 +304,12 @@ app
     }
 
     $scope.gameCtrl.iterateActions = function(index) {
-      if (typeof $scope.gameCtrl.match.results == 'undefined') {
+      if ($scope.gameCtrl.opponentDisconnected)
         return;
-      }
+
+      if (typeof $scope.gameCtrl.match.results == 'undefined')
+        return;
+
       // Set active user
       jQuery('.player.active').removeClass('active');
       jQuery('.player[data-userid="' + $scope.gameCtrl.match.results[index].attacker + '"]').addClass('active');
@@ -528,6 +545,12 @@ app
           ref.$digest();
         });
 
+        // Refresh online players stat
+        ref.connection.$socket.on('playersOnlineStatus', function (data) {
+          ref.playersOnline = data.nr;
+          ref.$digest();
+        });
+
         // Battle starts
         ref.connection.$socket.on('battleStart', function (data) {
           ref.gameCtrl.match.opponent.battleStats = data.opponentStats;
@@ -551,6 +574,9 @@ app
 
         // Handle opponentDisconnected event
         ref.connection.$socket.on('opponentDisconnected', function (data) {
+          ref.gameCtrl.opponentDisconnected = true;
+          ref.$digest();
+
           ref.gameCtrl.gameOver('Your opponent disconnected.');
         });
       }
@@ -559,5 +585,16 @@ app
         // Adding user's socketID to data to be send
         data.id = ref.id;
         ref.emit(event, data);
+      }
+  })
+
+  .service(
+    "ai",
+    function( $http, $q ) {
+      this.cucc;
+
+      this.init = function(p) {
+        console.log(p);
+        this.cucc = p;
       }
   });

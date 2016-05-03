@@ -27,6 +27,10 @@ function battle_of_legends_page() {
 
   $page = array();
 
+  if (!variable_get('lol_api_key', false)) {
+    return $page;
+  }
+
   $path = drupal_get_path('module', 'battle_of_legends');
 
   $content = theme_render_template($path . '/theme/page.tpl.php', array());
@@ -59,6 +63,8 @@ function battle_of_legends_page() {
 function bol_login() {
   $data = file_get_contents("php://input");
   $data = json_decode($data, TRUE);
+
+  LoLAPI::setApiKey(variable_get('lol_api_key', false));
 
   $user_info = LoLAPI::getUserByName($data['user'], $data['server']);
   if ($user_info !== null) {

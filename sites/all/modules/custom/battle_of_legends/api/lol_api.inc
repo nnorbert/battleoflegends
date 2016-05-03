@@ -2,7 +2,8 @@
 
 class LoLAPI {
 
-  private static $api_key = "d6fd9b0b-2f9c-425b-983b-7bb21e2d85eb";
+  // private static $api_key = "d6fd9b0b-2f9c-425b-983b-7bb21e2d85eb";
+  private static $api_key;
   private static $serverInfo = array(
     "br" => array(
       'platformID' => "BR1",
@@ -53,6 +54,10 @@ class LoLAPI {
       'host' => "pbe.api.pvp.net",
     ),
   );
+
+  public static function setApiKey($api_key) {
+     LoLAPI::$api_key = $api_key;
+  }
 
   public static function getUserByName($username, $server) {
     $url = "https://" . LoLAPI::$serverInfo[$server]['host'] . "/api/lol/" . $server . "/v1.4/summoner/by-name/" . $username . "?api_key=" . LoLAPI::$api_key;

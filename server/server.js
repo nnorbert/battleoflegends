@@ -24,6 +24,7 @@ var Client = function(socket) {
 }
 
 // Clients
+var playersOnline = 0;
 var clients = {};
 
 // Players waiting for battle
@@ -50,6 +51,11 @@ io.sockets.on('connection', function (socket) {
       clients[data.id].userID = data.userID;
       clients[data.id].userName = data.userName;
       clients[data.id].masteries = data.masteries;
+
+      playersOnline++;
+      io.sockets.emit('playersOnlineStatus', {
+        nr: playersOnline
+      });
     }
   });
 
@@ -144,6 +150,17 @@ io.sockets.on('connection', function (socket) {
       delete matches[data.matchID];
   });
 
+  // Handle cancelWaiting
+  socket.on('cancelWaiting', function (data) {
+    // Delete from waitingList
+    for (var waitingUser in waitingList) {
+      if (waitingList[waitingUser].userID == data.userID) {
+        waitingList.splice(waitingUser, 1);
+        break;
+      }
+    }
+  });
+
   // Handle disconnection
   socket.on('disconnect', function () {
     var id = socket.id.replace("/#", "");
@@ -162,6 +179,13 @@ io.sockets.on('connection', function (socket) {
         clients[ matches[match][ matches[match][clients[id].userID].opponent ].id ].socket.emit('opponentDisconnected', {});
         delete matches[match];
       }
+    }
+
+    if (clients[id].userID !== null) {
+      playersOnline--;
+      io.sockets.emit('playersOnlineStatus', {
+        nr: playersOnline
+      });
     }
 
     // Delete from connected clients
