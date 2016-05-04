@@ -1,7 +1,7 @@
 var app = angular.module('BoLApp', []);
 
 app
-  .controller('appController', function ($scope, api, client, ai) {
+  .controller('appController', function ($scope, api, client) {
     $scope.loading = false;
 
     $scope.waitTimeIndex = 1;
@@ -36,9 +36,6 @@ app
     // Connect to server
     $scope.connection.$socket = client.connect($scope.connection.serverURL);
     if ($scope.connection.$socket) {
-      // Waiting for everything to be ready
-      waitForSocketReady();
-
       // Handle incomming events
       client.attach($scope);
     }
@@ -94,23 +91,9 @@ app
           }
         );
     }
-
-    function waitForSocketReady() {
-      setTimeout(function () {
-        if ($scope.connection.$socket.id) {
-          init();
-        }
-        else {
-          waitForSocketReady();
-        }
-      }, 100);
-    }
-
-    function init() {
-      // Everything is ready
-    }
   })
-  .controller('gameController', function ($scope, api, client) {
+
+  .controller('gameController', function ($scope, api, client, ai) {
     $scope.gameCtrl.upgrades = null;
 
     $scope.gameCtrl.mode = null;
@@ -170,24 +153,24 @@ app
     }
 
     $scope.gameCtrl.championSelected = function(champID) {
+      $scope.gameCtrl.match.rounds = {
+        round: 1,
+        win: 0,
+        lose: 0
+      };
+
+      $scope.gameCtrl.match.player = {
+        userName: $scope.user.info.name,
+        userID: $scope.user.info.id,
+        championID: champID,
+        masteries: $scope.user.masteries.mapping[champID],
+        champion: $scope.champions[champID],
+      };
+
       switch ($scope.gameCtrl.mode) {
         case 'online':
           $scope.gameCtrl.gameStatus.championSelect = false;
           $scope.gameCtrl.gameStatus.findingPlayer = true;
-
-          $scope.gameCtrl.match.rounds = {
-            round: 1,
-            win: 0,
-            lose: 0
-          };
-
-          $scope.gameCtrl.match.player = {
-            userName: $scope.user.info.name,
-            userID: $scope.user.info.id,
-            championID: champID,
-            masteries: $scope.user.masteries.mapping[champID],
-            champion: $scope.champions[champID],
-          };
 
           // Register new game request
           client.send($scope.connection.$socket, 'newGame', {
@@ -198,6 +181,23 @@ app
           });
           break;
         case 'ai':
+          $scope.gameCtrl.gameStatus.championSelect = false;
+          $scope.gameCtrl.gameStatus.battle = true;
+
+          // Init AI
+          ai.init({
+            masteries: $scope.user.masteries.mapping[champID],
+            setUpgrades: $scope.gameCtrl.setUpgrades
+          });
+
+          // Choos champion
+          ai.chooseChampion($scope);
+          var opponent = ai.getAIData();
+
+          $scope.gameCtrl.match.opponent = opponent;
+
+          $scope.gameCtrl.battle();
+          ai.prepareBattle($scope.gameCtrl.match.opponent);
           break;
       }
     }
@@ -248,8 +248,9 @@ app
         if ($scope.gameCtrl.match.timeRemain > 0)
           $scope.gameCtrl.match.timeRemain--;
 
-        if ($scope.gameCtrl.match.timeRemain == 0)
+        if ($scope.gameCtrl.match.timeRemain == 0) {
           $scope.gameCtrl.ready();
+        }
 
         $scope.$digest();
       }, 1000);
@@ -289,12 +290,35 @@ app
     $scope.gameCtrl.ready = function() {
       $scope.gameCtrl.match.player.ready = true;
 
-      // Send stats
-      client.send($scope.connection.$socket, 'ready', {
-        matchID: $scope.gameCtrl.match.matchID,
-        userID: $scope.user.info.id,
-        stats: $scope.gameCtrl.match.player.battleStats
-      });
+      if ($scope.gameCtrl.mode == "online") {
+        // Send stats
+        client.send($scope.connection.$socket, 'ready', {
+          matchID: $scope.gameCtrl.match.matchID,
+          userID: $scope.user.info.id,
+          stats: $scope.gameCtrl.match.player.battleStats
+        });
+      }
+      else {
+        var opponentStats = ai.getBattleStats();
+        $scope.gameCtrl.match.opponent.battleStats = opponentStats;
+
+        clearInterval($scope.gameCtrl.match.timer);
+
+        // get battle results
+        var matchInfo = {};
+        matchInfo[$scope.gameCtrl.match.player.userID] = {
+          userID: $scope.gameCtrl.match.player.userID,
+          stats: $scope.gameCtrl.match.player.battleStats
+        };
+        matchInfo[$scope.gameCtrl.match.opponent.userID] = {
+          userID: $scope.gameCtrl.match.opponent.userID,
+          stats: $scope.gameCtrl.match.opponent.battleStats
+        };
+
+        client.send($scope.connection.$socket, 'getBattleResults', {
+          matchInfo: matchInfo
+        });
+      }
     }
 
     $scope.gameCtrl.battleStart = function() {
@@ -404,10 +428,17 @@ app
         $scope.$digest();
 
         setTimeout(function() {
-          client.send($scope.connection.$socket, 'roundOver', {
-            matchID: $scope.gameCtrl.match.matchID,
-            userID: $scope.user.info.id
-          });
+          if ($scope.gameCtrl.mode == "online") {
+            client.send($scope.connection.$socket, 'roundOver', {
+              matchID: $scope.gameCtrl.match.matchID,
+              userID: $scope.user.info.id
+            });
+          }
+          else {
+            $scope.gameCtrl.match.opponent.battleStats = null;
+            $scope.gameCtrl.battle();
+            ai.prepareBattle($scope.gameCtrl.match.opponent);
+          }
         }, 3000);
       }
     }
@@ -591,10 +622,103 @@ app
   .service(
     "ai",
     function( $http, $q ) {
-      this.cucc;
+      this.champion;
+      this.masteries;
+      this.masteryDiff = 2000;
 
-      this.init = function(p) {
-        console.log(p);
-        this.cucc = p;
+      this.upgrades;
+      this.setUpgrades;
+
+      this.battleStats;
+      this.upgradeStats;
+      this.pointsAvailable;
+
+      this.init = function(data) {
+        if (data.masteries < 5000) {
+          this.masteries = data.masteries;
+        }
+        else {
+          this.masteries = data.masteries - this.masteryDiff + Math.round(Math.random() * (this.masteryDiff * 2) + 1);
+        }
+        this.setUpgrades = data.setUpgrades;
+      }
+
+      this.chooseChampion = function(ref) {
+        var champIDs = [];
+
+        for (var id in ref.champions) {
+          champIDs.push(id);
+        }
+
+        var index = Math.round(Math.random() * champIDs.length);
+        this.champion = ref.champions[champIDs[index]];
+      }
+
+      this.getAIData = function() {
+        return {
+          userName: this.champion.name + ' Bot',
+          userID: 'bot-' + Date.now(),
+          championID: this.champion.id,
+          masteries: this.masteries,
+          champion: this.champion
+        };
+      }
+
+      this.prepareBattle = function(ref) {
+        this.upgrades = this.setUpgrades();
+        this.battleStats = {
+          hp: this.champion.stats.hp,
+          attackdamage: this.champion.stats.attackdamage,
+          crit: this.champion.stats.crit,
+          blockchance: this.champion.stats.blockchance
+        };
+        this.upgradeStats = {
+          hp: 0,
+          attackdamage: 0,
+          crit: 0,
+          blockchance: 0
+        };
+
+        this.pointsAvailable = this.masteries;
+        ref.pointsAvailable = this.masteries;
+      }
+
+      this.getBattleStats = function() {
+        var dl = this.decisionList();
+        var index;
+        do {
+          index = Math.floor(Math.random() * dl.length);
+          this.upgradeStat(dl[index].stat);
+
+          dl = this.decisionList();
+        } while (dl.length > 0);
+
+        return this.battleStats;
+      }
+
+      this.upgradeStat = function(stat) {
+        if (this.pointsAvailable - this.upgrades[stat].value >= 0
+          && (this.upgrades[stat].maxLevel == -1 || this.upgradeStats[stat] < this.upgrades[stat].maxLevel) ) {
+          this.battleStats[stat] += this.upgrades[stat].amount;
+          this.pointsAvailable -= this.upgrades[stat].value;
+          this.upgradeStats[stat]++;
+
+          this.upgrades[stat].value += Math.round((this.upgrades[stat].value * this.upgrades[stat].valuePerNivel) / 100);
+        }
+      }
+
+      this.decisionList = function() {
+        var dl = [];
+
+        for (var stat in this.upgrades) {
+          if (Math.floor(this.pointsAvailable / this.upgrades[stat].value) > 0) {
+            dl.push({
+              stat: stat,
+              canAfford: Math.floor(this.pointsAvailable / this.upgrades[stat].value)
+            });
+          }
+        }
+
+        return dl;
       }
   });

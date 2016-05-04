@@ -131,6 +131,16 @@ io.sockets.on('connection', function (socket) {
     }
   });
 
+  socket.on('getBattleResults', function(data) {
+    // Calculate the match results
+    var result = matchResults(data.matchInfo);
+
+    // Send the results to players
+    clients[data.id].socket.emit('battleResult', {
+      result: result
+    });
+  });
+
   socket.on('roundOver', function (data) {
     matches[data.matchID][data.userID].roundOver = true;
     delete matches[data.matchID][data.userID].stats;
