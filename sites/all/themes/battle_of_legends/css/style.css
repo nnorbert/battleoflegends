@@ -293,8 +293,8 @@ ul.tips {
   outline: 0;
 }
 #logo {
-  float: left; /* LTR */
-  padding: 15px 15px 15px 10px; /* LTR */
+  display: block;
+  text-align: center;
 }
 #name-and-slogan {
   float: left; /* LTR */
@@ -521,10 +521,10 @@ h1#site-name {
 
 /* ------------------- Main ------------------- */
 
-#main {
+/*#main {
   margin-top: 20px;
   margin-bottom: 40px;
-}
+}*/
 
 /* ----------------- Featured ----------------- */
 
@@ -566,9 +566,9 @@ h1#site-name {
 
 /* ----------------- Content ------------------ */
 
-.content {
+/*.content {
   margin-top: 10px;
-}
+}*/
 h1#page-title {
   font-size: 2em;
   line-height: 1;
@@ -704,6 +704,7 @@ ul.links {
 }
 .comment .submitted .comment-permalink {
   font-size: 0.786em;
+  text-transform: lowercase;
 }
 .comment .content {
   font-size: 0.929em;
@@ -1323,6 +1324,14 @@ input.form-button-disabled:active,
 }
 .form-disabled label {
   color: #717171;
+}
+
+/* Animated throbber */
+html.js input.form-autocomplete {
+  background-position: 100% 4px; /* LTR */
+}
+html.js input.throbbing {
+  background-position: 100% -16px; /* LTR */
 }
 
 /* Comment form */

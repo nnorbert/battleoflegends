@@ -1,0 +1,46 @@
+#page-wrapper {
+  background-color: #000;
+  background-image: url('../images/background.jpg');
+  background-size: cover;
+}
+
+#logo img {
+  display: block;
+  margin: 0 auto;
+}
+
+.app-wrapper {
+  position: relative;
+  background-image: url('../images/battlefield_background.png');
+  height: 400px;
+  overflow: hidden;
+  padding: 30px 30px;
+  box-sizing: border-box;
+}
+
+.champion-list {
+  position: relative;
+  height: 345px;
+}
+
+.button {
+  display: block;
+  cursor: pointer;
+  float: left;
+  padding: 5px 8px;
+  border: 1px solid black;
+}
+
+.floating {
+  float: left;
+  min-height: 10px;
+}
+
+.player.active {
+  border: 2px solid green;
+}
+
+.battlefront .action-container {
+  width: 150px;
+  text-align: center;
+}

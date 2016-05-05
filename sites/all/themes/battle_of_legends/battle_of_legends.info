@@ -1,13 +1,14 @@
 
 name = Battle of Legends
-description = Custom theme, based on Bartik.
+description = Battle of Legends Theme
 package = Custom
 version = VERSION
 core = 7.x
 
 stylesheets[all][] = css/layout.css
 stylesheets[all][] = css/style.css
-stylesheets[all][] = css/colors.css
+;stylesheets[all][] = css/colors.css
+stylesheets[all][] = css/bol.css
 stylesheets[print][] = css/print.css
 
 regions[header] = Header
