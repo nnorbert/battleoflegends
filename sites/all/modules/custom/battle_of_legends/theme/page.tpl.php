@@ -1,4 +1,4 @@
-<div class="app-wrapper" ng-app="BoLApp">
+<div class="app-wrapper clearfix" ng-app="BoLApp">
   <div ng-controller="appController">
     <div class="login-screen" ng-show="!user.loggedIn && !loading && connection.connectedToServer">
       <div class="login-error" ng-show="user.loginError">
@@ -32,7 +32,7 @@
     <div ng-controller="gameController">
       <div class="game-screen" ng-show="user.loggedIn && !loading && connection.connectedToServer">
         <!-- START SCREEN -->
-        <div class="champion-list" ng-show="gameCtrl.gameStatus.start">
+        <div class="game-modes" ng-show="gameCtrl.gameStatus.start">
           <div class="play-online" ng-click="gameCtrl.playOnline()">PLAY ONLINE</div>
           <div class="play-ai" ng-click="gameCtrl.playAI()">PLAY WITH AI</div>
 

@@ -8,7 +8,7 @@ module_load_include('inc', 'battle_of_legends', 'api/lol_api');
 function battle_of_legends_menu() {
   $items['bol'] = array(
     'title' => 'Battle of Legends',
-    'page callback' => 'battle_of_legends_page',
+    'page callback' => 'battle_of_legends_game_page',
     'access callback' => TRUE,
   );
 
@@ -22,7 +22,7 @@ function battle_of_legends_menu() {
   return $items;
 }
 
-function battle_of_legends_page() {
+function battle_of_legends_game_page() {
   global $base_url;
 
   $page = array();
@@ -39,7 +39,6 @@ function battle_of_legends_page() {
     '#markup' => $content,
   );
 
-  drupal_add_css($path . '/css/battle_of_legends.css');
 
   // Socket.IO
   $server = variable_get('application_server_host');
@@ -56,7 +55,18 @@ function battle_of_legends_page() {
   drupal_add_js($path . '/angularjs/angular.min.js');
   drupal_add_js($path . '/js/app.js');
 
+  // Perfect Scrollbar jQuery plugin
+  drupal_add_css($path . '/perfect_scrollbar/css/perfect-scrollbar.css');
+  drupal_add_js($path . '/perfect_scrollbar/js/perfect-scrollbar.jquery.js');
+
+
   return $page;
+}
+
+function battle_of_legends_custom_theme() {
+  if (arg(0) == 'bol') {
+    return 'battle_of_legends';
+  }
 }
 
 // Ajax calls

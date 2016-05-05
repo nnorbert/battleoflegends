@@ -91,6 +91,8 @@ app
           }
         );
     }
+
+    jQuery('.champion-list').perfectScrollbar();
   })
 
   .controller('gameController', function ($scope, api, client, ai) {
