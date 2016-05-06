@@ -243,7 +243,11 @@ function matchResults(match) {
 }
 
 function generateChance(chance) {
-  var chances = new Array(100).fill(0);
+  var chances = [];
+
+  for (var fillIndex = 0; fillIndex < 100; fillIndex++) {
+    chances.push(0);
+  }
 
   var indexes = [];
 
