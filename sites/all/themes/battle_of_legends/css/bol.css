@@ -1,7 +1,14 @@
+@font-face {
+    font-family: verdana;
+    src: url(../fonts/verdana.ttf);
+}
+
 #page-wrapper {
   background-color: #000;
   background-image: url('../images/background.jpg');
   background-size: cover;
+  font-family: verdana;
+  color: #333;
 }
 
 #logo img {
@@ -18,17 +25,25 @@
   box-sizing: border-box;
 }
 
-.champion-list {
-  position: relative;
-  height: 345px;
+.app-content {
+  display: none;
 }
 
 .button {
   display: block;
   cursor: pointer;
   float: left;
-  padding: 5px 8px;
+  padding: 5px 10px;
   border: 1px solid black;
+  color: #FFF;
+  background-color: #CA7613;
+  box-shadow: inset 0px 0px 15px rgba(0, 0, 0, 0.3);
+  border: 2px solid #DC7600;
+  text-shadow: 2px 2px #777
+}
+.button:hover {
+  background-color: #E48C24;
+  box-shadow: inset 0px 0px 15px rgba(0, 0, 0, 0.2)
 }
 
 .floating {
@@ -43,4 +58,152 @@
 .battlefront .action-container {
   width: 150px;
   text-align: center;
+}
+
+.center-text {
+  font-size: 18px;
+  position: absolute;
+  top: 50%;
+  margin-top: -14px;
+  text-align: center;
+  width: 640px;
+}
+
+/* Login */
+.login-screen {
+  margin-top: 25px;
+}
+
+.login-screen input[name="username"] {
+  width: 280px;
+}
+
+.login-screen select[name="server"] {
+  width: 290px;
+}
+
+.login-screen .submit-login {
+  margin-top: 15px;
+}
+
+.login-screen .login-error {
+  float: right;
+  width: 280px;
+  color: #AD1C1C;
+}
+
+/* Game screen */
+.game-screen .welcome {
+  text-align: center;
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 40px;
+}
+
+.game-screen .online-players {
+  position: absolute;
+  bottom: 25px;
+}
+
+.game-screen .game-modes .mode {
+  float: left;
+  width: 300px;
+  height: 200px;
+  background-color: #3D427B;
+  background-image: url('../images/single_mode_bttn_bck.jpg');
+  text-align: center;
+  line-height: 200px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #EFCA88;
+  text-shadow: 2px 2px #333;
+  border: 2px solid #999;
+  border-radius: 5px;
+}
+.game-screen .game-modes .mode.play-ai {
+  float: right;
+  background-image: url('../images/multi_mode_bttn_bck.jpg');
+}
+.game-screen .game-modes .mode:hover {
+  box-shadow: 0 0 10px 3px #EFCA88;
+}
+
+/* champion list */
+.champion-list {
+  position: relative;
+  height: 345px;
+  padding-left: 8px;
+}
+
+.champion-list .title {
+  float: left;
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+.champion-list .back-button {
+  float: right;
+  cursor: pointer;
+  margin-right: 20px;
+}
+.champion-list .back-button:hover {
+  text-decoration: underline;
+  color: #1010BF;
+}
+
+.champion-list .champion {
+  background-image: url('../images/champ_bck.jpg');
+  box-shadow: 0 0 5px #000;
+  width: 620px;
+  padding: 5px 5px;
+  box-sizing: border-box;
+  margin-left: 0px;
+  height: 130px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.champion-list .champion:hover {
+  box-shadow: 0 0 10px 3px #EFCA88;
+}
+
+.champion-list .champion .champion-pic {
+  margin-right: 25px;
+  cursor: pointer;
+}
+
+.champion-list .champion .champion-info .champion-name {
+  color: #EFCA88;
+  font-weight: bold;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.champion-list .champion .champion-info .champion-mastery-pt {
+  color: #FFF;
+  cursor: pointer;
+}
+
+/* finding player */
+.finding-player .button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: 20px 0 0 -30px;
+}
+
+/* game over */
+.game-over .back {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: 20px 0 0 -30px;
+}
+.game-over .message {
+  position: absolute;
+  top: 40%;
+  text-align: center;
+  width: 640px;
+  font-size: 36px;
+  font-weight: bold;
 }

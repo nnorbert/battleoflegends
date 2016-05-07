@@ -1,6 +1,6 @@
 <div class="app-wrapper clearfix" ng-app="BoLApp">
-  <div ng-controller="appController">
-    <div class="login-screen" ng-show="!user.loggedIn && !loading && connection.connectedToServer">
+  <div class="app-content" ng-controller="appController">
+    <div class="login-screen clearfix" ng-show="!user.loggedIn && !loading && connection.connectedToServer">
       <div class="login-error" ng-show="user.loginError">
         Sorry, we can not find you on the specified server. Please check again your username, and select the right server.
       </div>
@@ -8,7 +8,7 @@
         <label>Enter your League of Legends username</label>
         <input type="text"
            ng-model="user.username"
-           [name="username"]>
+           name="username">
       </div>
       <div>
         <label>Choose a server</label>
@@ -26,21 +26,27 @@
           <option value="tr">TR</option>
         </select>
       </div>
-      <div class="button" ng-click="login()">Login</div>
+      <div class="submit-login button" ng-click="login()">Login</div>
     </div>
 
     <div ng-controller="gameController">
       <div class="game-screen" ng-show="user.loggedIn && !loading && connection.connectedToServer">
         <!-- START SCREEN -->
+        <div class="welcome" ng-show="gameCtrl.gameStatus.start">Welcome {{user.info.name}}</div>
         <div class="game-modes" ng-show="gameCtrl.gameStatus.start">
-          <div class="play-online" ng-click="gameCtrl.playOnline()">PLAY ONLINE</div>
-          <div class="play-ai" ng-click="gameCtrl.playAI()">PLAY WITH AI</div>
-
-          <div>{{ playersOnline }} online players.</div>
+          <div class="clearfix">
+            <div class="mode play-online" ng-click="gameCtrl.playOnline()">PLAY ONLINE</div>
+            <div class="mode play-ai" ng-click="gameCtrl.playAI()">PLAY WITH AI</div>
+          </div>
+          <div class="online-players">{{ playersOnline == 1 ? playersOnline + " online player" : playersOnline + " online players" }}</div>
         </div>
 
         <!-- CHAMPION SEELCT SCREEN -->
-        <div class="champion-list" ng-show="gameCtrl.gameStatus.championSelect">
+        <div class="champion-list clearfix" ng-show="gameCtrl.gameStatus.championSelect">
+          <div class="clearfix">
+            <div class="title"><strong>Select a champion</strong></div>
+            <div class="back-button" ng-click="gameCtrl.backToHome()">back</div>
+          </div>
           <div class="champions">
             <div class="champion clearfix" ng-repeat="champ in user.masteries.champions" ng-click="gameCtrl.championSelected(champ.championId)">
               <div class="champion-pic floating">
@@ -48,7 +54,7 @@
               </div>
               <div class="champion-info floating">
                 <div class="champion-name">{{ champions[champ.championId].name }}</div>
-                <div class="champion-mastery-pt">{{ champ.championPoints }} Points</div>
+                <div class="champion-mastery-pt">Mastery points: <strong>{{ champ.championPoints }}</strong></div>
               </div>
             </div>
           </div>
@@ -57,7 +63,7 @@
 
         <!-- FINDING PLAYER SCREEN -->
         <div class="finding-player" ng-show="gameCtrl.gameStatus.findingPlayer">
-          <div class="message">Waiting for another player...</div>
+          <div class="message center-text">Waiting for another player...</div>
           <div class="button" ng-click="gameCtrl.cancelWaiting()">Cancel</div>
         </div>
 
@@ -182,11 +188,11 @@
       </div>
     </div>
 
-    <div class="loading" ng-show="loading && connection.connectedToServer">Loading ...</div>
-    <div class="connection-screen" ng-show="!connection.connectedToServer && !connection.connectionFailed">
+    <div class="loading center-text" ng-show="loading && connection.connectedToServer">Loading ...</div>
+    <div class="connection-screen center-text" ng-show="!connection.connectedToServer && !connection.connectionFailed">
       Connecting to server ...
     </div>
-    <div class="connection-failed" ng-show="connection.connectionFailed">
+    <div class="connection-failed center-text" ng-show="connection.connectionFailed">
       Connection failed. Please try agan later!
     </div>
   </div>

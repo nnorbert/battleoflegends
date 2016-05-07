@@ -34,6 +34,7 @@ app
     $scope.gameCtrl = {};
 
     // Connect to server
+
     $scope.connection.$socket = client.connect($scope.connection.serverURL);
     if ($scope.connection.$socket) {
       // Handle incomming events
@@ -43,6 +44,9 @@ app
       // Failed to connect
       $scope.connection.connectionFailed = true;
     }
+
+    // Show the content
+    jQuery('.app-content').show();
 
     // Login user
     $scope.login = function() {
@@ -144,6 +148,9 @@ app
       $scope.gameCtrl.match = {};
       $scope.gameCtrl.gameStatus.start = false;
       $scope.gameCtrl.gameStatus.championSelect = true;
+      setTimeout(function() {
+        jQuery('.champion-list').scrollTop(0);
+      }, 100);
       $scope.gameCtrl.mode = 'online';
     }
 
@@ -151,7 +158,16 @@ app
       $scope.gameCtrl.match = {};
       $scope.gameCtrl.gameStatus.start = false;
       $scope.gameCtrl.gameStatus.championSelect = true;
+      setTimeout(function() {
+        jQuery('.champion-list').scrollTop(0);
+      }, 100);
       $scope.gameCtrl.mode = 'ai';
+    }
+
+    $scope.gameCtrl.backToHome = function() {
+      $scope.gameCtrl.gameStatus.start = true;
+      $scope.gameCtrl.gameStatus.championSelect = false;
+      $scope.gameCtrl.mode = '';
     }
 
     $scope.gameCtrl.championSelected = function(champID) {
