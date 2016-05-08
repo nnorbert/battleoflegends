@@ -2,3 +2,5 @@ name = Battle of Legends
 description = Battle of Legends game controller module
 package = BoL
 core = 7.x
+
+dependencies[] = jquery_update

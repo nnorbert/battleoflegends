@@ -69,12 +69,9 @@
 
         <!-- BATTLE SCREEN -->
         <div class="battle clearfix" ng-show="gameCtrl.gameStatus.battle">
-          <div class="player floating" data-userid="{{ gameCtrl.match.player.userID }}">
+          <div class="player" data-userid="{{ gameCtrl.match.player.userID }}">
             <div class="player-name">
               {{ gameCtrl.match.player.userName }}
-            </div>
-            <div class="player-wins">
-              {{ gameCtrl.match.rounds.win }}
             </div>
             <div class="champion-details">
               <div class="champion-pic">
@@ -83,73 +80,84 @@
               <div class="champion-name">
                 {{ gameCtrl.match.player.champion.name }}
               </div>
-              <div class="points" ng-show="!gameCtrl.match.player.ready">Points available: {{ gameCtrl.match.player.pointsAvailable }}</div>
+              <div class="points"><strong ng-show="!gameCtrl.match.player.ready">MP: {{ gameCtrl.match.player.pointsAvailable }}</strong></div>
               <div class="champion-stats">
-                <div class="hp">
-                  <span class="stat-name">Health</span>
+                <div class="hp clearfix">
+                  <div class="stat-name">Health</div>
                   <span class="stat-value">{{ gameCtrl.match.player.battleStats.hp }}</span>
                   <span class="upgrade"
                     ng-click="gameCtrl.upgrade('hp')"
                     ng-show="gameCtrl.upgradeVisible('hp')">
-                      +{{ gameCtrl.upgrades.hp.amount }} HP ({{ gameCtrl.upgrades.hp.value }} points)
+                      <span class="up-bttn" ng-class="getStatActivityClass('hp')"></span>
+                      <span class="up-txt">+{{ gameCtrl.upgrades.hp.amount }} HP ({{ gameCtrl.upgrades.hp.value }} points)</span>
                   </span>
                 </div>
-                <div class="ad">
-                  <span class="stat-name">Attack damage</span>
+                <div class="ad clearfix">
+                  <div class="stat-name">Attack damage</div>
                   <span class="stat-value">{{ gameCtrl.match.player.battleStats.attackdamage }}</span>
                   <span class="upgrade"
                     ng-click="gameCtrl.upgrade('attackdamage')"
                     ng-show="gameCtrl.upgradeVisible('attackdamage')">
-                      +{{ gameCtrl.upgrades.attackdamage.amount }} AD ({{ gameCtrl.upgrades.attackdamage.value }} points)
+                      <span class="up-bttn" ng-class="getStatActivityClass('attackdamage')"></span>
+                      <span class="up-txt">+{{ gameCtrl.upgrades.attackdamage.amount }} Attack damage ({{ gameCtrl.upgrades.attackdamage.value }} points)</span>
                   </span>
                 </div>
-                <div class="crit">
-                  <span class="stat-name">Critical chance</span>
+                <div class="crit clearfix">
+                  <div class="stat-name">Critical chance</div>
                   <span class="stat-value">{{ gameCtrl.match.player.battleStats.crit }}%</span>
                   <span class="upgrade"
                     ng-click="gameCtrl.upgrade('crit')"
                     ng-show="gameCtrl.upgradeVisible('crit')">
-                      +{{ gameCtrl.upgrades.crit.amount }} Critical ({{ gameCtrl.upgrades.crit.value }} points)
+                      <span class="up-bttn" ng-class="getStatActivityClass('crit')"></span>
+                      <span class="up-txt">+{{ gameCtrl.upgrades.crit.amount }}% Critical chance ({{ gameCtrl.upgrades.crit.value }} points)</span>
                   </span>
                 </div>
-                <div class="block">
-                  <span class="stat-name">Block chance</span>
+                <div class="block clearfix">
+                  <div class="stat-name">Block chance</div>
                   <span class="stat-value">{{ gameCtrl.match.player.battleStats.blockchance }}%</span>
                   <span class="upgrade"
                     ng-click="gameCtrl.upgrade('blockchance')"
                     ng-show="gameCtrl.upgradeVisible('blockchance')">
-                      +{{ gameCtrl.upgrades.blockchance.amount }} Block ({{ gameCtrl.upgrades.blockchance.value }} points)
+                      <span class="up-bttn" ng-class="getStatActivityClass('blockchance')"></span>
+                      <span class="up-txt">+{{ gameCtrl.upgrades.blockchance.amount }}% Block chance ({{ gameCtrl.upgrades.blockchance.value }} points)</span>
                   </span>
                 </div>
               </div>
-              <div class="ready button" ng-show="!$scope.gameCtrl.match.battleStart && !gameCtrl.match.player.ready" ng-click="gameCtrl.ready()">Ready</div>
             </div>
           </div>
           <div class="battlefront floating">
-            <div class="rounds">Round {{ gameCtrl.match.rounds.round }}</div>
+            <div class="top clearfix">
+              <div class="player-wins">
+                <div>win</div>
+                <div>{{ gameCtrl.match.rounds.win }}</div>
+              </div>
+              <div class="rounds">Round {{ gameCtrl.match.rounds.round }}</div>
+              <div class="player-wins opponent">
+                <div>win</div>
+                <div>{{ gameCtrl.match.rounds.lose }}</div>
+              </div>
+            </div>
             <div class="champ-up-state" ng-show="!gameCtrl.match.battleStart && !gameCtrl.match.roundEnd">
-              <div>Upgrade your champion</div>
+              <div class="message">Upgrade your champion</div>
               <div class="timer">
-                {{ gameCtrl.match.timeRemain }}
+                {{ gameCtrl.match.timeRemain }} {{ gameCtrl.match.timeRemain == 1 ? 'second' : 'seconds' }} remainning
               </div>
             </div>
             <div class="battle-state" ng-show="gameCtrl.match.battleStart && !gameCtrl.match.roundEnd">
-              <div>Battle</div>
+              <div class="message">Battle</div>
               <div class="actions clearfix">
-                <div class="action-container floating" data-userid="{{ gameCtrl.match.player.userID }}"></div>
-                <div class="action-container floating" data-userid="{{ gameCtrl.match.opponent.userID }}"></div>
+                <div class="action-container" data-userid="{{ gameCtrl.match.player.userID }}"></div>
+                <div class="action-container opponent" data-userid="{{ gameCtrl.match.opponent.userID }}"></div>
               </div>
             </div>
             <div class="end-state" ng-show="gameCtrl.match.roundEnd">
               <div class="message"></div>
+              <div class="text">The next round immediately begins</div>
             </div>
           </div>
-          <div class="player floating" data-userid="{{ gameCtrl.match.opponent.userID }}">
+          <div class="player opponent" data-userid="{{ gameCtrl.match.opponent.userID }}">
             <div class="player-name">
               {{ gameCtrl.match.opponent.userName }}
-            </div>
-            <div class="player-wins">
-              {{ gameCtrl.match.rounds.lose }}
             </div>
             <div class="champion-details">
               <div class="champion-pic">
@@ -158,26 +166,28 @@
               <div class="champion-name">
                 {{ gameCtrl.match.opponent.champion.name }}
               </div>
+              <div class="points"></div>
               <div class="champion-stats" ng-show="gameCtrl.match.opponent.battleStats">
-                <div class="hp">
-                  <span class="stat-name">Health</span>
+                <div class="hp clearfix">
+                  <div class="stat-name">Health</div>
                   <span class="stat-value">{{ gameCtrl.match.opponent.battleStats.hp }}</span>
                 </div>
-                <div class="ad">
-                  <span class="stat-name">Attack damage</span>
+                <div class="ad clearfix">
+                  <div class="stat-name">Attack damage</div>
                   <span class="stat-value">{{ gameCtrl.match.opponent.battleStats.attackdamage }}</span>
                 </div>
-                <div class="crit">
-                  <span class="stat-name">Critical chance</span>
+                <div class="crit clearfix">
+                  <div class="stat-name">Critical chance</div>
                   <span class="stat-value">{{ gameCtrl.match.opponent.battleStats.crit }}%</span>
                 </div>
-                <div class="block">
-                  <span class="stat-name">Block chance</span>
+                <div class="block clearfix">
+                  <div class="stat-name">Block chance</div>
                   <span class="stat-value">{{ gameCtrl.match.opponent.battleStats.blockchance }}%</span>
                 </div>
               </div>
             </div>
           </div>
+          <div class="ready button" ng-show="!$scope.gameCtrl.match.battleStart && !gameCtrl.match.player.ready" ng-click="gameCtrl.ready()">Ready</div>
         </div>
 
         <!-- GAME OVER SCREEN -->

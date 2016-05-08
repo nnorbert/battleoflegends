@@ -4,7 +4,7 @@ app
   .controller('appController', function ($scope, api, client) {
     $scope.loading = false;
 
-    $scope.waitTimeIndex = 1;
+    $scope.waitTimeIndex = 2;
     $scope.roundsToWin = 2;
     $scope.waitTimes = [10, 500, 1000];
 
@@ -286,17 +286,30 @@ app
       }
     }
 
+    $scope.getStatActivityClass = function(stat) {
+      if ($scope.gameCtrl.match.battleStart)
+        return 'inactive';
+
+      if (typeof $scope.gameCtrl.match.player == 'undefined' || typeof $scope.gameCtrl.match.player.upgradeStats == 'undefined')
+        return 'inactive';
+
+      if ($scope.gameCtrl.match.player.upgradeStats[stat] == $scope.gameCtrl.upgrades[stat].maxLevel)
+        return 'inactive';
+
+      if ($scope.gameCtrl.match.player.pointsAvailable < $scope.gameCtrl.upgrades[stat].value)
+        return 'inactive';
+
+      if ($scope.gameCtrl.match.player.ready)
+        return 'inactive';
+
+      return 'active';
+    }
+
     $scope.gameCtrl.upgradeVisible = function(stat) {
       if ($scope.gameCtrl.match.battleStart)
         return false;
 
       if (typeof $scope.gameCtrl.match.player == 'undefined' || typeof $scope.gameCtrl.match.player.upgradeStats == 'undefined')
-        return false;
-
-      if ($scope.gameCtrl.match.player.upgradeStats[stat] == $scope.gameCtrl.upgrades[stat].maxLevel)
-        return false;
-
-      if ($scope.gameCtrl.match.player.pointsAvailable < $scope.gameCtrl.upgrades[stat].value)
         return false;
 
       if ($scope.gameCtrl.match.player.ready)
@@ -426,20 +439,28 @@ app
         // Win
         $scope.gameCtrl.match.rounds.win++;
         jQuery('.battlefront .end-state .message').text('Round win!');
+        jQuery('.battlefront .end-state .text').text('The next round immediately begins');
       }
       else {
         // Lose
         $scope.gameCtrl.match.rounds.lose++;
         jQuery('.battlefront .end-state .message').text('Round lose!');
+        jQuery('.battlefront .end-state .text').text('The next round immediately begins');
       }
 
       $scope.$digest();
 
       if ($scope.gameCtrl.match.rounds.win == $scope.roundsToWin) {
-        $scope.gameCtrl.gameOver('You win!');
+        jQuery('.battlefront .end-state .text').text('');
+        setTimeout(function() {
+          $scope.gameCtrl.gameOver('You win!');
+        }, 3000);
       }
       else if ($scope.gameCtrl.match.rounds.lose == $scope.roundsToWin) {
-        $scope.gameCtrl.gameOver('You lose!');
+        jQuery('.battlefront .end-state .text').text('');
+        setTimeout(function() {
+          $scope.gameCtrl.gameOver('You lose!');
+        }, 3000);
       }
       else {
         $scope.gameCtrl.match.rounds.round++;
@@ -491,6 +512,14 @@ app
 
       $scope.gameCtrl.match = {};
     }
+
+    // jQuery controlled hover action on upgrade buttons
+    jQuery('.battle .player').on('mouseenter', '.up-bttn', function() {
+      jQuery(this).next('.up-txt').show();
+    });
+    jQuery('.battle .player').on('mouseleave', '.up-bttn', function() {
+      jQuery(this).next('.up-txt').hide();
+    });
   })
 
   .service(

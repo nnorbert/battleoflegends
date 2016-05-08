@@ -4,6 +4,22 @@ $conf['application_server_host'] = 'http://127.0.0.1';
 $conf['application_server_port'] = 8000;
 $conf['lol_api_key'] = 'your_api_key';
 
+$databases = array (
+  'default' =>
+  array (
+    'default' =>
+    array (
+      'database' => 'database_name',
+      'username' => 'root',
+      'password' => 'root',
+      'host' => 'localhost',
+      'port' => '',
+      'driver' => 'mysql',
+      'prefix' => '',
+    ),
+  ),
+);
+
 /**
  * @file
  * Drupal site-specific configuration file.
@@ -216,21 +232,6 @@ $conf['lol_api_key'] = 'your_api_key';
  *   );
  * @endcode
  */
-$databases = array (
-  'default' =>
-  array (
-    'default' =>
-    array (
-      'database' => 'database_name',
-      'username' => 'root',
-      'password' => 'root',
-      'host' => 'localhost',
-      'port' => '',
-      'driver' => 'mysql',
-      'prefix' => '',
-    ),
-  ),
-);
 
 /**
  * Access control for update.php script.

@@ -51,10 +51,6 @@
   min-height: 10px;
 }
 
-.player.active {
-  border: 2px solid green;
-}
-
 .battlefront .action-container {
   width: 150px;
   text-align: center;
@@ -110,7 +106,7 @@
   width: 300px;
   height: 200px;
   background-color: #3D427B;
-  background-image: url('../images/single_mode_bttn_bck.jpg');
+  background-image: url('../images/multi_mode_bttn_bck.jpg');
   text-align: center;
   line-height: 200px;
   font-size: 24px;
@@ -123,7 +119,7 @@
 }
 .game-screen .game-modes .mode.play-ai {
   float: right;
-  background-image: url('../images/multi_mode_bttn_bck.jpg');
+  background-image: url('../images/single_mode_bttn_bck.jpg');
 }
 .game-screen .game-modes .mode:hover {
   box-shadow: 0 0 10px 3px #EFCA88;
@@ -206,4 +202,164 @@
   width: 640px;
   font-size: 36px;
   font-weight: bold;
+}
+
+/* Battle */
+.battle {
+  position: relative;
+  height: 345px;
+}
+.battle .player {
+  position: absolute;
+  left: 0px;
+  width: 170px;
+  height: 345px;
+  background-image: url('../images/player_bck.jpg');
+  box-sizing: border-box;
+  padding: 5px 8px;
+  box-shadow: 0 0 5px #000;
+  color: #EFCA88;
+}
+.battle .player.active {
+  box-shadow: 0 0 10px 5px #EFCA88;
+}
+.battle .player.opponent {
+  right: 0px;
+  left: inherit;
+}
+.battle .player .player-name {
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+}
+
+.battle .champion-pic {
+  height: 65px;
+}
+.battle .champion-pic img {
+  display: block;
+  width: 65px;
+  height: 65px;
+  margin: 0 auto;
+}
+
+.battle .champion-name {
+  text-align: center;
+}
+
+.battle .player .points {
+  margin-bottom: 10px;
+  height: 18px;
+}
+.battle .player .champion-stats .stat-name {
+  font-weight: bold;
+}
+
+.battle .player .champion-stats .stat-value {
+  font-size: 16px;
+  float: left;
+  font-weight: bold;
+}
+
+.battle .player .champion-stats .upgrade {
+  float: right;
+}
+
+.battle .player .champion-stats .up-bttn {
+  display: block;
+  width: 18px;
+  height: 18px;
+  background-image: url('../images/upp_bttn_active.jpg');
+  background-size: cover;
+  cursor: pointer;
+}
+.battle .player .champion-stats .up-bttn.active:hover {
+  box-shadow: 0 0 5px 2px #EFCA88;
+}
+.battle .player .champion-stats .up-bttn.inactive {
+  background-image: url('../images/upp_bttn_inactive.jpg');
+}
+
+.battle .player .champion-stats .upgrade {
+  position: relative;
+}
+.battle .player .champion-stats .up-txt {
+  display: none;
+  background: #000;
+  white-space: nowrap;
+  position: absolute;
+  top: -1px;
+  left: 25px;
+  padding: 0 8px;
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5);
+  z-index: 10;
+  border-radius: 5px;
+}
+
+.battle .ready.button {
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  bottom: 0px;
+  margin-left: -35px;
+}
+
+.battlefront {
+  width: 298px;
+  margin-left: 170px;
+}
+.battlefront .top .player-wins {
+  float: left;
+  width: 50px;
+  text-align: center;
+}
+.battlefront .top .player-wins.opponent {
+  float: right;
+}
+
+.battlefront .top .rounds {
+  float: left;
+  width: 195px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.battlefront .champ-up-state,
+.battlefront .end-state {
+  font-weight: bold;
+  text-align: center;
+  margin-top: 100px;
+}
+.battlefront .champ-up-state .message,
+.battlefront .end-state .message {
+  font-size: 20px;
+}
+
+.battlefront .battle-state .message {
+  margin-top: 15px;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.battlefront .battle-state .actions {
+  width: 298px;
+  margin-top: 60px;
+  color: #EFCA88;
+}
+.battlefront .battle-state .actions .action-container {
+  background-image: url('../images/battlefield_player.png');
+  background-repeat: no-repeat;
+  width: 145px;
+  height: 175px;
+  line-height: 175px;
+  float: left;
+  font-weight: bold;
+}
+.battlefront .battle-state .actions .action-container.opponent {
+  float: right;
+  background-image: url('../images/battlefield_opponent.png');
+  background-repeat: no-repeat;
+  margin-right: -4px;
 }
