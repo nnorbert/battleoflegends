@@ -131,12 +131,12 @@
           <div class="battlefront floating">
             <div class="top clearfix">
               <div class="player-wins">
-                <div>win</div>
+                <div>wins</div>
                 <div>{{ gameCtrl.match.rounds.win }}</div>
               </div>
               <div class="rounds">Round {{ gameCtrl.match.rounds.round }}</div>
               <div class="player-wins opponent">
-                <div>win</div>
+                <div>wins</div>
                 <div>{{ gameCtrl.match.rounds.lose }}</div>
               </div>
             </div>
