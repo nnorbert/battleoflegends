@@ -44,11 +44,13 @@ The default port for the server is 8000. If you want to set another port, you ca
 If everything is setted up correctly, you have to see the login screen on the game's page.
 
 ## How to play
-This game use the original chmapions, and their stats from the League of Legends, provided by the Riot Games API. You can play with any champions, that has any champion mastery points. These point will be used to upgrade your champ, so choose a champion with the most of mastery points for a higher chance of victory.
+This game use the original chmapions, and their stats from the League of Legends, provided by the Riot Games API. You can play with any champions, that has champion mastery points. These point will be used to upgrade your champ, so choose a champion with the most of mastery points for a higher chance of victory.
 
 You can play online with another players, or with AI. If you play online, you will be paired with a player, who have almost the same mastery points, the acceptable difference in points is 2000 mastery points.
 
-Once you selected your champion and an another player was found, the battle begins. To win the battle, you have to win 2 of 3 rounds. In every round you have maximum 60 second to upgrade your champion. You can upgrade the basic stats of your champion:
+Once you selected your champion and an another player was found, the battle begins. To win the battle, you have to win 2 of 3 rounds.
+
+In every round you have maximum 60 second to upgrade your champion. You can upgrade the basic stats of your champion:
 
 * Health
 * Attack damage
@@ -56,6 +58,7 @@ Once you selected your champion and an another player was found, the battle begi
 * Block chance
 
 Every champion is equal, there is no difference in special passive abilitys, it's only relevant the champion's attack damage and health.
+
 With every upgrade, the cost of the next upgrade for the selected stat will go up (megdragul).
 Some stats have a maximum level, like critical chance, and block chance, these stats can be upgraded to maximum 50%.
 
