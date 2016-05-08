@@ -119,26 +119,30 @@ app
       return {
         hp: {
           amount: 20,
-          value: 150,
+          value: 300,
           valuePerNivel: 15,
+          percentageUp: 5,
           maxLevel: -1,
         },
         attackdamage: {
           amount: 10,
-          value: 100,
-          valuePerNivel: 15,
+          value: 500,
+          valuePerNivel: 20,
+          percentageUp: 7,
           maxLevel: -1,
         },
         crit: {
           amount: 5,
-          value: 500,
-          valuePerNivel: 20,
+          value: 1500,
+          valuePerNivel: 30,
+          percentageUp: 15,
           maxLevel: 10,
         },
         blockchance: {
           amount: 5,
-          value: 300,
+          value: 1300,
           valuePerNivel: 25,
+          percentageUp: 10,
           maxLevel: 10,
         }
       };
@@ -282,6 +286,7 @@ app
         $scope.gameCtrl.match.player.upgradeStats[stat]++;
 
         $scope.gameCtrl.upgrades[stat].value += Math.round(($scope.gameCtrl.upgrades[stat].value * $scope.gameCtrl.upgrades[stat].valuePerNivel) / 100);
+        $scope.gameCtrl.upgrades[stat].valuePerNivel += $scope.gameCtrl.upgrades[stat].percentageUp;
       }
     }
 
@@ -601,6 +606,9 @@ app
           if(data) {
             if (data.status == 1) {
               ref.connection.connectedToServer = true;
+              if (typeof ref.connection.$socket.id == 'undefined') {
+                ref.connection.$socket.id = data.id;
+              }
               ref.$digest();
             }
           } else {
@@ -752,6 +760,7 @@ app
           this.upgradeStats[stat]++;
 
           this.upgrades[stat].value += Math.round((this.upgrades[stat].value * this.upgrades[stat].valuePerNivel) / 100);
+          this.upgrades[stat].valuePerNivel += this.upgrades[stat].percentageUp;
         }
       }
 
