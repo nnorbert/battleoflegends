@@ -1,6 +1,6 @@
 var express = require("express");
 var app = express();
-var port = 8001;
+var port = 8000;
 
 // Check arguments for custom port
 var args = process.argv.slice(2);
