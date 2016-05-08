@@ -272,7 +272,6 @@ app
 
         $scope.$digest();
       }, 1000);
-
     }
 
     $scope.gameCtrl.upgrade = function(stat) {
@@ -353,6 +352,8 @@ app
     }
 
     $scope.gameCtrl.battleStart = function() {
+      $scope.gameCtrl.match.player.battleStats.initialHP = $scope.gameCtrl.match.player.battleStats.hp;
+      $scope.gameCtrl.match.opponent.battleStats.initialHP = $scope.gameCtrl.match.opponent.battleStats.hp;
       $scope.gameCtrl.match.battleStart = true;
       $scope.gameCtrl.iterateActions(0);
       $scope.$digest();

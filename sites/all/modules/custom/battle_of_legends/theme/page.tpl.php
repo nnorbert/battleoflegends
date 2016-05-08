@@ -80,7 +80,10 @@
               <div class="champion-name">
                 {{ gameCtrl.match.player.champion.name }}
               </div>
-              <div class="points"><strong ng-show="!gameCtrl.match.player.ready">MP: {{ gameCtrl.match.player.pointsAvailable }}</strong></div>
+              <div class="points" ng-show="!gameCtrl.match.player.ready"><strong>MP: {{ gameCtrl.match.player.pointsAvailable }}</strong></div>
+              <div class="hp-bar" ng-show="gameCtrl.match.battleStart">
+                <div class="hp" style="width: {{ gameCtrl.match.player.battleStats.hp * 100 / gameCtrl.match.player.battleStats.initialHP }}%;"></div>
+              </div>
               <div class="champion-stats">
                 <div class="hp clearfix">
                   <div class="stat-name">Health</div>
@@ -166,7 +169,10 @@
               <div class="champion-name">
                 {{ gameCtrl.match.opponent.champion.name }}
               </div>
-              <div class="points"></div>
+              <div class="points" ng-show="!gameCtrl.match.player.ready"></div>
+              <div class="hp-bar" ng-show="gameCtrl.match.battleStart">
+                <div class="hp" style="width: {{ gameCtrl.match.opponent.battleStats.hp * 100 / gameCtrl.match.opponent.battleStats.initialHP }}%;"></div>
+              </div>
               <div class="champion-stats" ng-show="gameCtrl.match.opponent.battleStats">
                 <div class="hp clearfix">
                   <div class="stat-name">Health</div>
