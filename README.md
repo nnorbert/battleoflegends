@@ -20,9 +20,8 @@ You can install this Drupal project as a new one, or just import the attached My
 
 * Import the dump in your new database. The site's admin user and password is set to:
 
-* user: **admin**
-
-* password: **admin**
+user: **admin**
+password: **admin**
 
 Next, overwrite the settings.php from your **sites/default/** folder with the settings.php fromp the **dump** folder, and edit the database settings with your database name and connection credentials. Access the site's login page (http://localhost/battleoflegends/user), log in, and clear the cache. The next step is not relevant for you, just skip it.
 
