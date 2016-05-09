@@ -19,7 +19,9 @@ You can install this Drupal project as a new one, or just import the attached My
 * Next, create a new database, preferable to use **utf8_general_ci** as the collation. If you want to use the given dump, follow the instructions in the next step, otherwise skip it.
 
 * Import the dump in your new database. The site's admin user and password is set to:
+
 user: **admin**
+
 password: **admin**
 
 Next, overwrite the settings.php from your **sites/default/** folder with the settings.php fromp the **dump** folder, and edit the database settings with your database name and connection credentials. Access the site's login page (http://localhost/battleoflegends/user), log in, and clear the cache. The next step is not relevant for you, just skip it.
