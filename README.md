@@ -7,9 +7,11 @@ Battle of Legends is a multiplayer logical game, based on the League of Legends 
 The Battle of Legends is an AngularJS application, with Drupal in backend and Node.js as application server.
 
 ### 1. Get the codebase
+
 Clone this repo into your web server's root directory. Tested with Apache2 with Php 5.4 on Ubuntu 14.04 and 5.5 Windows 8.1.
 
 ### 2. Install Drupal
+
 You can install this Drupal project as a new one, or just import the attached MySQL dump. If you choose to import the given dump, the project will be setted up, but you still have to edit the settings.php with your personal API key and the application server's address.
 
 * First of all, you have to create in your project's sites/default folder a new folder, named **files**, and copy the **default.setting.php** file, and rename it to **settings.php**. You have to give writing permission on the files folder and the settings.php file.
@@ -17,8 +19,10 @@ You can install this Drupal project as a new one, or just import the attached My
 * Next, create a new database, preferable to use **utf8_general_ci** as the collation. If you want to use the given dump, follow the instructions in the next step, otherwise skip it.
 
 * Import the dump in your new database. The site's admin user and password is set to:
-user: **admin**
-password: **admin**
+
+* user: **admin**
+
+* password: **admin**
 
 Next, overwrite the settings.php from your **sites/default/** folder with the settings.php fromp the **dump** folder, and edit the database settings with your database name and connection credentials. Access the site's login page (http://localhost/battleoflegends/user), log in, and clear the cache. The next step is not relevant for you, just skip it.
 
