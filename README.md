@@ -44,7 +44,7 @@ The Node.js server realizes the real-time connection between players in multipla
 * Install the Node.js LTS version from [https://nodejs.org](https://nodejs.org).
 * In this repo, you will find a folder, named **server**. Open a terminal, and change in there, so the **server.js** file will be found. This server application uses two Node.js modules, the **express** and the **socket.io**. These modules are downloaded, it is not necessary to pay attention to install them.
 * Start up the server with the following command:
-* 
+
 **node server.js**
 
 The default port for the server is 8000. If you want to set another port, you can do it by passing the port number as a parameter to the server. The following code will start the server to listen on 8080 port:
