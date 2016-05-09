@@ -19,7 +19,6 @@ You can install this Drupal project as a new one, or just import the attached My
 * Next, create a new database, preferable to use **utf8_general_ci** as the collation. If you want to use the given dump, follow the instructions in the next step, otherwise skip it.
 
 * Import the dump in your new database. The site's admin user and password is set to:
-
 user: **admin**
 password: **admin**
 
@@ -29,7 +28,7 @@ Next, overwrite the settings.php from your **sites/default/** folder with the se
 
 * **Set up your API KEY and the application server's address**
 Open your **settings.php** from the sites/default/ folder, and add the following variables filled with the correct informations
-```python
+```php
 $conf['application_server_host'] = 'http://127.0.0.1';
 $conf['application_server_port'] = 8000;
 $conf['lol_api_key'] = 'your_api_key';
