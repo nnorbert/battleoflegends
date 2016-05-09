@@ -10,6 +10,8 @@ app
 
     $scope.timeouts;
 
+    $scope.instructionScreen = false;
+
     $scope.playersOnline = 0;
     // Connection object
     $scope.connection = {
@@ -96,7 +98,19 @@ app
         );
     }
 
+    $scope.openInstructions = function() {
+      $scope.instructionScreen = !$scope.instructionScreen;
+      setTimeout(function() {
+        jQuery('.instructions').scrollTop(0);
+      }, 100);
+    }
+
+    $scope.closeInstructions = function() {
+      $scope.instructionScreen = false;
+    }
+
     jQuery('.champion-list').perfectScrollbar();
+    jQuery('.instructions').perfectScrollbar();
   })
 
   .controller('gameController', function ($scope, api, client, ai) {
@@ -120,28 +134,28 @@ app
         hp: {
           amount: 20,
           value: 300,
-          valuePerNivel: 15,
-          percentageUp: 5,
+          valuePerNivel: 10,
+          percentageUp: 3,
           maxLevel: -1,
         },
         attackdamage: {
           amount: 10,
           value: 500,
-          valuePerNivel: 20,
-          percentageUp: 7,
+          valuePerNivel: 15,
+          percentageUp: 5,
           maxLevel: -1,
         },
         crit: {
           amount: 5,
-          value: 1500,
-          valuePerNivel: 30,
-          percentageUp: 15,
+          value: 1700,
+          valuePerNivel: 25,
+          percentageUp: 12,
           maxLevel: 10,
         },
         blockchance: {
           amount: 5,
-          value: 1300,
-          valuePerNivel: 25,
+          value: 1500,
+          valuePerNivel: 20,
           percentageUp: 10,
           maxLevel: 10,
         }

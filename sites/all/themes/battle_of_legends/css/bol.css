@@ -3,6 +3,9 @@
     src: url(../fonts/verdana.ttf);
 }
 
+body {
+  background-color: #000;
+}
 #page-wrapper {
   background-color: #000;
   background-image: url('../images/background.jpg');
@@ -11,6 +14,10 @@
   color: #333;
 }
 
+#logo {
+  padding-top: 25px;
+  margin-bottom: 30px;
+}
 #logo img {
   display: block;
   margin: 0 auto;
@@ -20,7 +27,7 @@
   position: relative;
   background-image: url('../images/battlefield_background.png');
   height: 400px;
-  overflow: hidden;
+  /*overflow: hidden;*/
   padding: 30px 30px;
   box-sizing: border-box;
 }
@@ -376,4 +383,50 @@
   background-image: url('../images/battlefield_opponent.png');
   background-repeat: no-repeat;
   margin-right: -4px;
+}
+
+.how-to-play {
+  position: absolute;
+  bottom: -60px;
+  left: 281px;
+  padding-bottom: 20px;
+}
+.how-to-play .text {
+  cursor: pointer;
+  color: #EFCA88;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: #3d427b;
+  padding: 5px 10px;
+  text-shadow: 2px 2px #555;
+  box-shadow: 0 0 5px 2px #EFCA88;
+  border: 2px solid #333;
+}
+.how-to-play .text:hover {
+  box-shadow: 0 0 8px 3px #EFCA88;
+}
+
+.instructions {
+  position: absolute;
+  top: 35px;
+  left: 30px;
+  width: 652px;
+  height: 335px;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding-right: 15px;
+  box-sizing: border-box;
+  text-align: justify;
+}
+.instructions .close-instructions {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  width: 20px;
+  height: 20px;
+  font-size: 18px;
+  line-height: 20px;
+  text-align: center;
 }
